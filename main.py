@@ -1,7 +1,26 @@
+from sys import argv; import csv
 
+def output():
+    pass
 
+if len(argv) > 1: 
+    with open(argv[1]) as file:
+        # This make the program focus on an specific rate given as the third argumnet on the command line
+        # # of the first row on the csv document.
+        rateFocus = 0
+        firstLine = file.readline()
+        for i in firstLine:
+            if i == argv[2]:
+                rateFocus = i
+                break
 
+        # This makes sure that the lines are read as an csv file.
+        csvFile = csv.reader(file)
 
+    file.close()
+
+#prueba: py main.py stocks.csv 300 1m
+# resultado: ['TSLA', '0.26 GOOGL']
 
 """
 This project's main purpose is to select from a list of provided stocks based on the amount to invest and the specified 
