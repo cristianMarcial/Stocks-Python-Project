@@ -1,26 +1,37 @@
-from sys import argv; import csv
+from sys import argv
+from csv import reader
+from collections import OrderedDict
+from operator import itemgetter
 
-def output():
-    pass
+def output(input):
+    result = {}
+    for line in input:
+        result[argv[0]] = line[rateFocus] #check reverse
+        result = {k: v for k, v in sorted(result.items(), key=lambda item: item[1], reverse=True)}
 
 if len(argv) > 1: 
     with open(argv[1]) as file:
+        
         # This make the program focus on an specific rate given as the third argumnet on the command line
-        # # of the first row on the csv document.
-        rateFocus = 0
+        # # of the first row on the csv document. 
         firstLine = file.readline()
-        for i in firstLine:
-            if i == argv[2]:
-                rateFocus = i
-                break
+        rateFocus = firstLine.index(argv[2])
 
         # This makes sure that the lines are read as an csv file.
-        csvFile = csv.reader(file)
+        print(output(reader(file)))
 
     file.close()
 
 #prueba: py main.py stocks.csv 300 1m
 # resultado: ['TSLA', '0.26 GOOGL']
+
+# c=0
+        
+#         for i in firstLine:
+#             if i == argv[2]:
+#                 rateFocus = i.index
+#                 break
+#             c=+1
 
 """
 This project's main purpose is to select from a list of provided stocks based on the amount to invest and the specified 
