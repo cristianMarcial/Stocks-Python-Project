@@ -2,86 +2,45 @@ from sys import argv
 from csv import reader
 
 def output(input):
+    # Dictionary that contains the names of the stocks in the document sorted by their profits-to-price ratio. 
     stocks = {}
-    bought_stocks = []
-    #bsdiv = {}
 
+    # Contains the names of the stocks and their price.
+    priceCatalog = {} 
+
+    # The stocks that were spent.
+    boughtStocks = []
+
+    # Amount of money to invest in stocks.
     money = float(argv[2])
 
+    # The variables 'stocks' and 'priceCatalog' are assigned a value according to their purpose.
     for line in input:
-        stocks[line[0]] = float(line[rateFocus]) / float(line[1]) #calcular ratio float(line[1])/float(line[rateFocus])
+        stocks[line[0]] = float(line[rateFocus]) / float(line[1])
+        priceCatalog[line[0]] = float(line[1])
         stocks = {k: v for k, v in sorted(stocks.items(), key=lambda item: item[1], reverse=True)}
     
+    # The money will be spent through the iteration until there is less than the price of the last stock purchased.
     for i in stocks:
-        if stocks[i] <= money:
-            bought_stocks.append(i)
-            money =- float(stocks[i])
+        if priceCatalog[i] <= money:
+            boughtStocks.append(i)
+            money -= priceCatalog[i]
         else:
-            bought_stocks.append(str(round(money/float(stocks[i]), 2)) + " " + i)
-            print(stocks) #1m / current money
+            boughtStocks.append(str(round(money/float(priceCatalog[i]), 2)) + " " + i)
             break
-    print(bought_stocks)
+    print(boughtStocks)
 
 if len(argv) > 1: 
     with open(argv[1]) as file:
-        # of the first row on the csv document. 
+        # First line on the csv document. It has the name of the stocks, their prices and their rates of return.
         firstLine = next(reader(file))
 
-        # This make the program focus on an specific rate given as the third argumnent on the command line.
-        rateFocus = firstLine.index(argv[3]) #11
+        # This make the program focus on an specific rate given as the third argument on the command line.
+        rateFocus = firstLine.index(argv[3].upper())
 
-        # This 
+        # Returns a list of the stocks that were spent.
         output(reader(file))
     file.close()
 
-#prueba: py main.py stocks.csv 300 1m
-# resultado: ['TSLA', '0.26 GOOGL']
-
-"""
-This project's main purpose is to select from a list of provided stocks based on the amount to invest and the specified 
-timeframe for the rate of return for the stock.
-
-The Usecase is very simple: A person has X amount of money to invest in a stock and he/she wants to maximize his/her 
-investment based on stock historical data for a specific timeframe.  Maybe the person wants to maximize based on one 
-month of historical projection or five months, a year, or 5 years.
-
-So the input to the program are:
-
-1) List of stocks to choose from.  These stocks contain the stock price, name, 1 month, 6 months, 1 year and 5 years 
-historical returns for that stock.  The stock file is a Comma comma-separate file (CSV) that will be passed as command 
-line to your program and has the following format:
-
-name,price,1M,6M,1Y,5Y
-
-GOOGL,134.98,5.18,28.72,33.87,76.46
-
-MSFT,323.23,0.45,17.98,33.25,182.75
-
-IBM,150.03,5.43,18.5,18.76,3.76
-
-HPQ,27.22,-13.06,-4.91,2.85,2.85
-
-ORCL,113.38,-2.68,29.58,66.63,122.21
-
-META,300.65,3.75,48.73,105.88,84.75
-
-TSLA,265.51,14.62,34.17,-14.15,1229.27
-
-Since you want to have a diversified portfolio you can only pick 1 stock for each company.  But if you still have money after 
-picking the best stock for your timeframe your program can pick a fraction of the next stock.  So a common program run will be 
-something like:
-
-python ./stockPicker.py stocks.csv 300 1m
-
-This will instruct your program to use the stocks from the "stocks.csv" file, let the program know you only have $300 dollars to 
-spend in stocks and that you want to base your stock choice on the one-month rate of return (which will make your program focus 
-on the 1M rates).  The valid rates that your program can accept are: "1m", "6m", "1y" and "5y".  
-
-The output of your program must be in the following format:
-
-['TSLA', '0.26 GOOGL']
-
-This means that with a $300 investment and using only a month rate of returns, the best option to spend the $300 is to buy 1 stock 
-from TSLA and 0.26 stocks of GOOGL.
-
-"""
+# prueba: py main.py stocks.csv 300 1m
+# resultado esperado: ['TSLA', '0.26 GOOGL']
