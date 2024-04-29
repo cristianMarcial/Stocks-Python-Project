@@ -1,37 +1,41 @@
 from sys import argv
 from csv import reader
-from collections import OrderedDict
-from operator import itemgetter
 
 def output(input):
-    result = {}
+    stocks = {}
+    bought_stocks = []
+    #bsdiv = {}
+
+    money = float(argv[2])
+
     for line in input:
-        result[argv[0]] = line[rateFocus] #check reverse
-        result = {k: v for k, v in sorted(result.items(), key=lambda item: item[1], reverse=True)}
+        stocks[line[0]] = float(line[rateFocus]) / float(line[1]) #calcular ratio float(line[1])/float(line[rateFocus])
+        stocks = {k: v for k, v in sorted(stocks.items(), key=lambda item: item[1], reverse=True)}
+    
+    for i in stocks:
+        if stocks[i] <= money:
+            bought_stocks.append(i)
+            money =- float(stocks[i])
+        else:
+            bought_stocks.append(str(round(money/float(stocks[i]), 2)) + " " + i)
+            print(stocks) #1m / current money
+            break
+    print(bought_stocks)
 
 if len(argv) > 1: 
     with open(argv[1]) as file:
-        
-        # This make the program focus on an specific rate given as the third argumnet on the command line
-        # # of the first row on the csv document. 
-        firstLine = file.readline()
-        rateFocus = firstLine.index(argv[2])
+        # of the first row on the csv document. 
+        firstLine = next(reader(file))
 
-        # This makes sure that the lines are read as an csv file.
-        print(output(reader(file)))
+        # This make the program focus on an specific rate given as the third argumnent on the command line.
+        rateFocus = firstLine.index(argv[3]) #11
 
+        # This 
+        output(reader(file))
     file.close()
 
 #prueba: py main.py stocks.csv 300 1m
 # resultado: ['TSLA', '0.26 GOOGL']
-
-# c=0
-        
-#         for i in firstLine:
-#             if i == argv[2]:
-#                 rateFocus = i.index
-#                 break
-#             c=+1
 
 """
 This project's main purpose is to select from a list of provided stocks based on the amount to invest and the specified 
