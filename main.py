@@ -1,5 +1,6 @@
 from sys import argv
 from csv import reader
+from collections import OrderedDict
 
 def output(input):
     # Dictionary that contains the names of the stocks in the document sorted by their profits-to-price ratio. 
@@ -18,8 +19,8 @@ def output(input):
     for line in input:
         stocks[line[0]] = float(line[rateFocus]) / float(line[1])
         priceCatalog[line[0]] = float(line[1])
-        stocks = {k: v for k, v in sorted(stocks.items(), key=lambda item: item[1], reverse=True)}
-    
+    stocks = OrderedDict(sorted(stocks.items(), key=lambda kv: kv[1], reverse=True))
+
     # The money will be spent through the iteration until there is less than the price of the last stock purchased.
     for i in stocks:
         if priceCatalog[i] <= money:
