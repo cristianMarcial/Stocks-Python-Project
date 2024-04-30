@@ -42,4 +42,4 @@ The output of your program must be in the following format:
 ['TSLA', '0.26 GOOGL']
 
 This means that with a $300 investment and using only a month rate of returns, the best option to spend the $300 is to buy 1 stock 
-from TSLA and 0.26 stocks of GOOGL.
+from TSLA and 0.26 stocks of GOOGL. This output could be obtained if "py main.py stocks.csv 300 1m" is typed on the terminal.
