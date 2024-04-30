@@ -6,7 +6,7 @@ def output(input):
     stocks = {}
 
     # Contains the names of the stocks and their price.
-    priceCatalog = {} 
+    priceCatalog = {}  
 
     # The stocks that were spent.
     boughtStocks = []
@@ -41,6 +41,3 @@ if len(argv) > 1:
         # Returns a list of the stocks that were spent.
         output(reader(file))
     file.close()
-
-# prueba: py main.py stocks.csv 300 1m
-# resultado esperado: ['TSLA', '0.26 GOOGL']
